@@ -1,0 +1,159 @@
+<!DOCTYPE html>
+
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>ANR Earthquake Knowledge Quiz</title>
+  <style>
+    body {
+      font-family: 'Segoe UI', sans-serif;
+      background: linear-gradient(to right, #f0f7ff, #e6f0fa);
+      color: #222;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      padding: 20px;
+    }
+    h1 {
+      color: #114b8b;
+      text-align: center;
+    }
+    .quiz-container {
+      background: white;
+      border-radius: 20px;
+      box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+      padding: 20px;
+      max-width: 450px;
+      width: 100%;
+    }
+    .question {
+      margin-bottom: 10px;
+      font-weight: 600;
+    }
+    .options label {
+      display: block;
+      margin: 6px 0;
+      background: #f7f9fb;
+      padding: 8px 12px;
+      border-radius: 10px;
+      cursor: pointer;
+      transition: 0.3s;
+    }
+    .options label:hover {
+      background: #dcecff;
+    }
+    button {
+      background: #114b8b;
+      color: white;
+      border: none;
+      padding: 10px 20px;
+      border-radius: 8px;
+      cursor: pointer;
+      font-size: 16px;
+    }
+    button:hover {
+      background: #0d3970;
+    }
+    #result {
+      margin-top: 20px;
+      font-size: 18px;
+      text-align: center;
+      font-weight: 600;
+    }
+    footer {
+      margin-top: 40px;
+      font-size: 13px;
+      color: #666;
+    }
+  </style>
+</head>
+<body>
+  <h1>ANR Earthquake Knowledge Quiz</h1>
+  <div class="quiz-container" id="quiz"></div>
+  <div id="result"></div>
+  <footer>Created by Abhijith</footer>
+
+  <script>
+    const quizData = [
+      {
+        question: "1. What instrument measures the strength of earthquakes?",
+        options: ["Thermometer", "Seismograph", "Barometer", "Anemometer"],
+        answer: "Seismograph"
+      },
+      {
+        question: "2. What scale is used to measure earthquake magnitude?",
+        options: ["Beaufort Scale", "Richter Scale", "Mercalli Scale", "Moment Scale"],
+        answer: "Richter Scale"
+      },
+      {
+        question: "3. The point directly above the earthquake focus on the surface is called:",
+        options: ["Hypocenter", "Epicenter", "Fault line", "Crust Point"],
+        answer: "Epicenter"
+      },
+      {
+        question: "4. Which layer of the Earth causes earthquakes?",
+        options: ["Mantle", "Core", "Crust", "Atmosphere"],
+        answer: "Crust"
+      },
+      {
+        question: "5. What safety action should you do during an earthquake?",
+        options: ["Run outside", "Use elevator", "Drop, Cover and Hold", "Stand near windows"],
+        answer: "Drop, Cover and Hold"
+      }
+    ];
+
+    const quizContainer = document.getElementById('quiz');
+    const resultContainer = document.getElementById('result');
+    let score = 0;
+
+    quizData.forEach((q, index) => {
+      const questionDiv = document.createElement('div');
+      questionDiv.classList.add('question-block');
+
+      const questionText = document.createElement('div');
+      questionText.classList.add('question');
+      questionText.textContent = q.question;
+      questionDiv.appendChild(questionText);
+
+      const optionsDiv = document.createElement('div');
+      optionsDiv.classList.add('options');
+
+      q.options.forEach(opt => {
+        const label = document.createElement('label');
+        const input = document.createElement('input');
+        input.type = 'radio';
+        input.name = 'q' + index;
+        input.value = opt;
+        label.appendChild(input);
+        label.appendChild(document.createTextNode(" " + opt));
+        optionsDiv.appendChild(label);
+      });
+
+      questionDiv.appendChild(optionsDiv);
+      quizContainer.appendChild(questionDiv);
+    });
+
+    const button = document.createElement('button');
+    button.textContent = 'Submit Quiz';
+    quizContainer.appendChild(button);
+
+    button.addEventListener('click', () => {
+      score = 0;
+      quizData.forEach((q, index) => {
+        const selected = document.querySelector(`input[name='q${index}']:checked`);
+        if (selected && selected.value === q.answer) score++;
+      });
+
+      const total = quizData.length;
+      let message = "";
+      if (score === total) message = "🌟 Perfect! You're a Seismo Star!";
+      else if (score >= 3) message = "👏 Great job! You know your earthquakes.";
+      else message = "💡 Keep learning! Earthquakes can shake, but knowledge is steady.";
+
+      resultContainer.innerHTML = `You scored ${score} / ${total}.<br>${message}`;
+    });
+  </script>
+
+</body>
+</html>
